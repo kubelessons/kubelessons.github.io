@@ -1,4 +1,5 @@
 ---
+layout: page
 icon: fas fa-laptop-code
-order: 1
+order: 2
 ---
