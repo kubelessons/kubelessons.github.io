@@ -16,3 +16,4 @@ MiniKube is a tool that makes it easy to run Kubernetes locally. It runs a by de
 ```bash
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
+```
