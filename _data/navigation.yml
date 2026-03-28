@@ -1,0 +1,7 @@
+main:
+  - title: "Home"
+    url: /
+  - title: "MiniKube Setup"
+    url: /minikube/
+  - title: "Mock Exams"
+    url: /mock-exams/

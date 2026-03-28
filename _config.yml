@@ -1,3 +1,8 @@
-theme: jekyll-theme-slate
+theme: jekyll-theme-chirpy
+remote_theme: cotes2020/chirpy
 title: Kubelessons
-description: Learn and practice Kubernetes with MiniKube and mock exams.
+tagline: Learn and practice Kubernetes
+description: >-
+  A place to learn Kubernetes with MiniKube and practice with mock exams.
+lang: en
+timezone: Europe/Amsterdam

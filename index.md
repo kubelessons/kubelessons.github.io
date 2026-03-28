@@ -11,6 +11,6 @@ This website is designed to help you learn and practice Kubernetes in a hands-on
 - **Practice Exams**: Test your knowledge with our mock exams.
 - **Free and Open**: All content is freely available.
 
-[Get Started with MiniKube Setup](minikube.html)
+[Get Started with MiniKube Setup](/minikube/)
 
-[Try Mock Exams](mock-exams.html)
+[Try Mock Exams](/mock-exams/)
