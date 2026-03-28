@@ -1,6 +1,7 @@
 ---
-layout: default
+layout: page
 title: Mock Exams
+permalink: /mock-exams/
 ---
 # Mock Exams
 
