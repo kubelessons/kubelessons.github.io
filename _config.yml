@@ -1,4 +1,3 @@
-theme: jekyll-theme-chirpy
 remote_theme: cotes2020/chirpy
 title: Kubelessons
 tagline: Learn and practice Kubernetes
