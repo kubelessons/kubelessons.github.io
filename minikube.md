@@ -1,6 +1,7 @@
 ---
-layout: default
-title: MiniKube Exam Setup
+layout: page
+title: MiniKube Setup
+permalink: /minikube/
 ---
 # MiniKube Setup
 
