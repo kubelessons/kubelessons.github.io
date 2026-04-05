@@ -3,5 +3,4 @@
 icon: fas fa-info-circle
 order: 5
 ---
-
-Kubestronauts for hire
+Coming soon
