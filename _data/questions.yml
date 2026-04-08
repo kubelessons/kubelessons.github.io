@@ -1,6 +1,5 @@
+ckad1_intro:
+  text: "Welcome to the CKAD 1 mock-exam. For this exam you must have minikube ready. For this exam some additional things must be ready. Add one node to the cluster called node01. "
+
 q1:
-  text: "What is 2 + 2?"
-  choices:
-    - "3"
-    - "4"
-    - "5"
+  text: "On the namespace x, do y."

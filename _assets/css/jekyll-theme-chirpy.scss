@@ -1,0 +1,13 @@
+#timer-container {
+  width: 100%;
+  height: 10px;
+  background: #eee;
+  margin-bottom: 20px;
+}
+
+#timer-bar {
+  height: 100%;
+  width: 100%;
+  background: #4caf50;
+  transition: width 1s linear;
+}
