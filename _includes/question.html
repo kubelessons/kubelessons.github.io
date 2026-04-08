@@ -1,0 +1,9 @@
+{% assign qdata = site.data.questions[include.id] %}
+
+{% if qdata %}
+  <div class="question">
+    <p><strong>{{ qdata.text }}</strong></p>
+  </div>
+{% else %}
+  <p style="color:red;">Question not found: {{ include.id }}</p>
+{% endif %}

@@ -166,6 +166,9 @@ collections:
   tabs:
     output: true
     sort_by: order
+  mock_exams:
+    output: true
+    permalink: /mock-exams/:name/
 
 defaults:
   - scope:
