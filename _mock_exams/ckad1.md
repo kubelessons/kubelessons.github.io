@@ -5,6 +5,9 @@ questions:
   - ckad1_labels_and_pods
   - ckad1_nodes_and_taints
   - ckad1_deployments_and_autoscaling
+  - ckad1_canary_and_loadbalancing
+  - ckad1_cronjobs
+  - ckad1_restricted_namespace
 ---
 <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 

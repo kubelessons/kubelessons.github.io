@@ -15,7 +15,61 @@ ckad1_nodes_and_taints:
 
 ckad1_deployments_and_autoscaling:
   text: |
-    Team Cr4zy has requested their image to be deployed on the {{team-cr4zy}} namespace. They require their image {{webapp-color:v1}} to be deployed as a container in a Deployment named {{cr4zy-app}}. The deployment should update its Pods using the {{Recreate}} strategy.
+    Team Cr4zy has requested their image to be deployed on the {{team-cr4zy}} namespace. They require their image {{webapp-color:v1}} to be deployed as a container in a Deployment named {{cr4zy-app}}. 
+    The deployment should update its Pods using the {{Recreate}} strategy.
     As the load on the application can vary drastically during the day, you suggest using horizontal autoscaling. 
     
-    Configure the {{cr4zy-app}} Deployment with horizontal autoscaling. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%.
+    Configure the {{cr4zy-app}} Deployment with a horizontal autoscaler. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%.
+
+ckad1_canary_and_loadbalancing:
+  text: |
+    A new version of a web application your company is hosting is available. You are tasked with verifying that the new version of the application can reliably serve traffic. 
+    You will do this by creating a so-called *canary* Deployment. Using this method, the new version of the application is spun up and serves traffic next to the old version of the application.
+
+    Create a Deployment called {{application}} with image {{hashicorp/http-echo:v0.2.2}}, and a Deployment called {{canary}} with image {{hashicorp/http-echo:v0.2.3}} both on a new namespace {{loadbalance}}. 
+    Configure a Service that balances the load over the two Deployments in such a way that 75% of the traffic reaches the stable version ({{hashicorp/http-echo:v0.2.2}}) 
+    and 25% reaches the canary version ({{hashicorp/http-echo:v0.2.3}}) Deployment.
+
+    **Optional**: you can verify your solution by adding the following configuration to your Deployments:
+
+    ```yaml
+        args: ["-text", "Hello from Pod $(POD_NAME)"]
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+    ```
+
+    The image should then respond to API GET Requests with the Pod name that handled the request.
+
+ckad1_cronjobs:
+  text: |
+    As a member of Team Slyce you are responsible for creating PostgreSQL database backups and cleaning up old log files. Both the backup and cleanup Jobs must happen on a regular schedule. 
+    The requirements of the two jobs are as follows:
+    - A CronJob named {{db-backup}} must exist in the {{pg-slyce}} namespace. It should run the image {{postgres:15.17-trixie}} and schedule a Job every night at 02:00 AM.
+    - The {{db-backup}} CronJob may never run any Jobs at the same time.
+    - The {{db-backup}} CronJob should should always keep the last 7 successful, and last 7 failed Jobs.
+
+    - A CronJob named {{db-cleanup}} must exist in the {{pg-slyce}} namespace. It should also run the image {{postgres:15.17-trixie}}.
+    - The {{db-cleanup}} CronJob must run once per week on Sunday at 05:00 AM.
+    - The Jobs created by the {{db-cleanup}} CronJob should have a maximum of 3 retries upon failure. The container itself must never be allowed to Restart.
+
+    Create both CronJobs according to the specifications mentioned above.
+
+ckad1_restricted_namespace:
+  text: |
+    You received a message from a developer that Kyverno flagged a Pod in the {{acceptance}} namespace in another Kubernetes cluster for violating some of the security policies. 
+    You do not have access to that Kubernetes cluster, but the developer does send you a log of Error messages:
+
+    ```log
+    error: resource was rejected by Kyverno: resource Pod/acceptance/insecure-pod failed policy strict-policy: 
+    - runAsNonRoot: container c1 must not run as root (UID 0)
+    - seccompProfile: container c1 must have a seccomp profile set to RuntimeDefault
+    - allowPrivilegeEscalation: container c1 must not allow privilege escalation
+    - readOnlyRootFilesystem: container c1 must have a read-only root filesystem
+    - capabilities: container c1 must drop ALL capabilities and only add approved capabilities
+    ```
+
+    Show the developer how to implement a Pod with the correct security context. Deploy a Pod to the {{acceptance}} namespace in your cluster that conforms to all the security policies that are mentioned above. 
+    You can name the Pod {{dev-security-demo}}, and for demonstration purposes can use the image {{nginx:latest}}.

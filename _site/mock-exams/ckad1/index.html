@@ -32,17 +32,17 @@
 <meta name="generator" content="Jekyll v4.4.1" />
 <meta property="og:title" content="CKAD exam 1" />
 <meta property="og:locale" content="en" />
-<meta name="description" content="CKAD Exam Instructions Before starting the exam, you must have a working MiniKube cluster. You must be able to add MiniKube nodes. Read all questions carefully. You can navigate through questions using the Next/Previous buttons. The bar at the top of the screen will show you the rough amount of time remaining. Total time is 2 hours. Start Exam Create 3 Pods with names nginx1 📋 Copied! , nginx2 📋 Copied! , and nginx3 📋 Copied! in the namespace 104ab4 📋 Copied! running nginx:latest 📋 Copied! . Label nginx1 with app=nginx 📋 Copied! . Annotate nginx2 with ingress=enabled 📋 Copied! . Completely unlabel the nginx3 Pod. You are a member of team-blue and must prepare a compute node designed only for team-blue deployments. Create a new minikube Node named blue 📋 Copied! , with the command minikube node add blue 📋 Copied! . Add a taint to the blue 📋 Copied! node that avoids scheduling any Pods on that node. Create a Deployment named blue-dedicated-node 📋 Copied! in the namespace team-blue 📋 Copied! that tolerates the taint on the blue 📋 Copied! node and is scheduled on that node. Team Cr4zy has requested their image to be deployed on the team-cr4zy 📋 Copied! namespace. They require their image webapp-color:v1 📋 Copied! to be deployed as a container in a Deployment named cr4zy-app 📋 Copied! . The deployment should update its Pods using the Recreate 📋 Copied! strategy. As the load on the application can vary drastically during the day, you suggest using horizontal autoscaling. Configure the cr4zy-app 📋 Copied! Deployment with horizontal autoscaling. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%. Previous Next" />
-<meta property="og:description" content="CKAD Exam Instructions Before starting the exam, you must have a working MiniKube cluster. You must be able to add MiniKube nodes. Read all questions carefully. You can navigate through questions using the Next/Previous buttons. The bar at the top of the screen will show you the rough amount of time remaining. Total time is 2 hours. Start Exam Create 3 Pods with names nginx1 📋 Copied! , nginx2 📋 Copied! , and nginx3 📋 Copied! in the namespace 104ab4 📋 Copied! running nginx:latest 📋 Copied! . Label nginx1 with app=nginx 📋 Copied! . Annotate nginx2 with ingress=enabled 📋 Copied! . Completely unlabel the nginx3 Pod. You are a member of team-blue and must prepare a compute node designed only for team-blue deployments. Create a new minikube Node named blue 📋 Copied! , with the command minikube node add blue 📋 Copied! . Add a taint to the blue 📋 Copied! node that avoids scheduling any Pods on that node. Create a Deployment named blue-dedicated-node 📋 Copied! in the namespace team-blue 📋 Copied! that tolerates the taint on the blue 📋 Copied! node and is scheduled on that node. Team Cr4zy has requested their image to be deployed on the team-cr4zy 📋 Copied! namespace. They require their image webapp-color:v1 📋 Copied! to be deployed as a container in a Deployment named cr4zy-app 📋 Copied! . The deployment should update its Pods using the Recreate 📋 Copied! strategy. As the load on the application can vary drastically during the day, you suggest using horizontal autoscaling. Configure the cr4zy-app 📋 Copied! Deployment with horizontal autoscaling. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%. Previous Next" />
+<meta name="description" content="CKAD Exam Instructions Before starting the exam, you must have a working MiniKube cluster. You must be able to add MiniKube nodes. Read all questions carefully. You can navigate through questions using the Next/Previous buttons. The bar at the top of the screen will show you the rough amount of time remaining. Total time is 2 hours. Start Exam Create 3 Pods with names nginx1 📋 Copied! , nginx2 📋 Copied! , and nginx3 📋 Copied! in the namespace 104ab4 📋 Copied! running nginx:latest 📋 Copied! . Label nginx1 with app=nginx 📋 Copied! . Annotate nginx2 with ingress=enabled 📋 Copied! . Completely unlabel the nginx3 Pod. You are a member of team-blue and must prepare a compute node designed only for team-blue deployments. Create a new minikube Node named blue 📋 Copied! , with the command minikube node add blue 📋 Copied! . Add a taint to the blue 📋 Copied! node that avoids scheduling any Pods on that node. Create a Deployment named blue-dedicated-node 📋 Copied! in the namespace team-blue 📋 Copied! that tolerates the taint on the blue 📋 Copied! node and is scheduled on that node. Team Cr4zy has requested their image to be deployed on the team-cr4zy 📋 Copied! namespace. They require their image webapp-color:v1 📋 Copied! to be deployed as a container in a Deployment named cr4zy-app 📋 Copied! . The deployment should update its Pods using the Recreate 📋 Copied! strategy. As the load on the application can vary drastically during the day, you suggest using horizontal autoscaling. Configure the cr4zy-app 📋 Copied! Deployment with a horizontal autoscaler. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%. A new version of a web application your company is hosting is available. You are tasked with verifying that the new version of the application can reliably serve traffic. You will do this by creating a so-called canary Deployment. Using this method, the new version of the application is spun up and serves traffic next to the old version of the application. Create a Deployment called application 📋 Copied! with image hashicorp/http-echo:v0.2.2 📋 Copied! , and a Deployment called canary 📋 Copied! with image hashicorp/http-echo:v0.2.3 📋 Copied! both on a new namespace loadbalance 📋 Copied! . Configure a Service that balances the load over the two Deployments in such a way that 75% of the traffic reaches the stable version ( hashicorp/http-echo:v0.2.2 📋 Copied! ) and 25% reaches the canary version ( hashicorp/http-echo:v0.2.3 📋 Copied! ) Deployment. Optional: you can verify your solution by adding the following configuration to your Deployments: 1 2 3 4 5 6 args: [&quot;-text&quot;, &quot;Hello from Pod $(POD_NAME)&quot;] env: - name: POD_NAME valueFrom: fieldRef: fieldPath: metadata.name The image should then respond to API GET Requests with the Pod name that handled the request. As a member of Team Slyce you are responsible for creating PostgreSQL database backups and cleaning up old log files. Both the backup and cleanup Jobs must happen on a regular schedule. The requirements of the two jobs are as follows: A CronJob named db-backup 📋 Copied! must exist in the pg-slyce 📋 Copied! namespace. It should run the image postgres:15.17-trixie 📋 Copied! and schedule a Job every night at 02:00 AM. The db-backup 📋 Copied! CronJob may never run any Jobs at the same time. The db-backup 📋 Copied! CronJob should should always keep the last 7 successful, and last 7 failed Jobs. A CronJob named db-cleanup 📋 Copied! must exist in the pg-slyce 📋 Copied! namespace. It should also run the image postgres:15.17-trixie 📋 Copied! . The db-cleanup 📋 Copied! CronJob must run once per week on Sunday at 05:00 AM. The Jobs created by the db-cleanup 📋 Copied! CronJob should have a maximum of 3 retries upon failure. The container itself must never be allowed to Restart. Create both CronJobs according to the specifications mentioned above. You received a message from a developer that Kyverno flagged a Pod in the acceptance 📋 Copied! namespace in another Kubernetes cluster for violating some of the security policies. You do not have access to that Kubernetes cluster, but the developer does send you a log of Error messages: error: resource was rejected by Kyverno: resource Pod/acceptance/insecure-pod failed policy strict-policy: - runAsNonRoot: container c1 must not run as root (UID 0) - seccompProfile: container c1 must have a seccomp profile set to RuntimeDefault - allowPrivilegeEscalation: container c1 must not allow privilege escalation - readOnlyRootFilesystem: container c1 must have a read-only root filesystem - capabilities: container c1 must drop ALL capabilities and only add approved capabilities Show the developer how to implement a Pod with the correct security context. Deploy a Pod to the acceptance 📋 Copied! namespace in your cluster that conforms to all the security policies that are mentioned above. You can name the Pod dev-security-demo 📋 Copied! , and for demonstration purposes can use the image nginx:latest 📋 Copied! . Previous Next" />
+<meta property="og:description" content="CKAD Exam Instructions Before starting the exam, you must have a working MiniKube cluster. You must be able to add MiniKube nodes. Read all questions carefully. You can navigate through questions using the Next/Previous buttons. The bar at the top of the screen will show you the rough amount of time remaining. Total time is 2 hours. Start Exam Create 3 Pods with names nginx1 📋 Copied! , nginx2 📋 Copied! , and nginx3 📋 Copied! in the namespace 104ab4 📋 Copied! running nginx:latest 📋 Copied! . Label nginx1 with app=nginx 📋 Copied! . Annotate nginx2 with ingress=enabled 📋 Copied! . Completely unlabel the nginx3 Pod. You are a member of team-blue and must prepare a compute node designed only for team-blue deployments. Create a new minikube Node named blue 📋 Copied! , with the command minikube node add blue 📋 Copied! . Add a taint to the blue 📋 Copied! node that avoids scheduling any Pods on that node. Create a Deployment named blue-dedicated-node 📋 Copied! in the namespace team-blue 📋 Copied! that tolerates the taint on the blue 📋 Copied! node and is scheduled on that node. Team Cr4zy has requested their image to be deployed on the team-cr4zy 📋 Copied! namespace. They require their image webapp-color:v1 📋 Copied! to be deployed as a container in a Deployment named cr4zy-app 📋 Copied! . The deployment should update its Pods using the Recreate 📋 Copied! strategy. As the load on the application can vary drastically during the day, you suggest using horizontal autoscaling. Configure the cr4zy-app 📋 Copied! Deployment with a horizontal autoscaler. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%. A new version of a web application your company is hosting is available. You are tasked with verifying that the new version of the application can reliably serve traffic. You will do this by creating a so-called canary Deployment. Using this method, the new version of the application is spun up and serves traffic next to the old version of the application. Create a Deployment called application 📋 Copied! with image hashicorp/http-echo:v0.2.2 📋 Copied! , and a Deployment called canary 📋 Copied! with image hashicorp/http-echo:v0.2.3 📋 Copied! both on a new namespace loadbalance 📋 Copied! . Configure a Service that balances the load over the two Deployments in such a way that 75% of the traffic reaches the stable version ( hashicorp/http-echo:v0.2.2 📋 Copied! ) and 25% reaches the canary version ( hashicorp/http-echo:v0.2.3 📋 Copied! ) Deployment. Optional: you can verify your solution by adding the following configuration to your Deployments: 1 2 3 4 5 6 args: [&quot;-text&quot;, &quot;Hello from Pod $(POD_NAME)&quot;] env: - name: POD_NAME valueFrom: fieldRef: fieldPath: metadata.name The image should then respond to API GET Requests with the Pod name that handled the request. As a member of Team Slyce you are responsible for creating PostgreSQL database backups and cleaning up old log files. Both the backup and cleanup Jobs must happen on a regular schedule. The requirements of the two jobs are as follows: A CronJob named db-backup 📋 Copied! must exist in the pg-slyce 📋 Copied! namespace. It should run the image postgres:15.17-trixie 📋 Copied! and schedule a Job every night at 02:00 AM. The db-backup 📋 Copied! CronJob may never run any Jobs at the same time. The db-backup 📋 Copied! CronJob should should always keep the last 7 successful, and last 7 failed Jobs. A CronJob named db-cleanup 📋 Copied! must exist in the pg-slyce 📋 Copied! namespace. It should also run the image postgres:15.17-trixie 📋 Copied! . The db-cleanup 📋 Copied! CronJob must run once per week on Sunday at 05:00 AM. The Jobs created by the db-cleanup 📋 Copied! CronJob should have a maximum of 3 retries upon failure. The container itself must never be allowed to Restart. Create both CronJobs according to the specifications mentioned above. You received a message from a developer that Kyverno flagged a Pod in the acceptance 📋 Copied! namespace in another Kubernetes cluster for violating some of the security policies. You do not have access to that Kubernetes cluster, but the developer does send you a log of Error messages: error: resource was rejected by Kyverno: resource Pod/acceptance/insecure-pod failed policy strict-policy: - runAsNonRoot: container c1 must not run as root (UID 0) - seccompProfile: container c1 must have a seccomp profile set to RuntimeDefault - allowPrivilegeEscalation: container c1 must not allow privilege escalation - readOnlyRootFilesystem: container c1 must have a read-only root filesystem - capabilities: container c1 must drop ALL capabilities and only add approved capabilities Show the developer how to implement a Pod with the correct security context. Deploy a Pod to the acceptance 📋 Copied! namespace in your cluster that conforms to all the security policies that are mentioned above. You can name the Pod dev-security-demo 📋 Copied! , and for demonstration purposes can use the image nginx:latest 📋 Copied! . Previous Next" />
 <link rel="canonical" href="http://localhost:4000/mock-exams/ckad1/" />
 <meta property="og:url" content="http://localhost:4000/mock-exams/ckad1/" />
 <meta property="og:site_name" content="Kubelessons" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-04-10T18:18:28+02:00" />
+<meta property="article:published_time" content="2026-04-10T22:42:55+02:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="CKAD exam 1" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2026-04-10T18:18:28+02:00","datePublished":"2026-04-10T18:18:28+02:00","description":"CKAD Exam Instructions Before starting the exam, you must have a working MiniKube cluster. You must be able to add MiniKube nodes. Read all questions carefully. You can navigate through questions using the Next/Previous buttons. The bar at the top of the screen will show you the rough amount of time remaining. Total time is 2 hours. Start Exam Create 3 Pods with names nginx1 📋 Copied! , nginx2 📋 Copied! , and nginx3 📋 Copied! in the namespace 104ab4 📋 Copied! running nginx:latest 📋 Copied! . Label nginx1 with app=nginx 📋 Copied! . Annotate nginx2 with ingress=enabled 📋 Copied! . Completely unlabel the nginx3 Pod. You are a member of team-blue and must prepare a compute node designed only for team-blue deployments. Create a new minikube Node named blue 📋 Copied! , with the command minikube node add blue 📋 Copied! . Add a taint to the blue 📋 Copied! node that avoids scheduling any Pods on that node. Create a Deployment named blue-dedicated-node 📋 Copied! in the namespace team-blue 📋 Copied! that tolerates the taint on the blue 📋 Copied! node and is scheduled on that node. Team Cr4zy has requested their image to be deployed on the team-cr4zy 📋 Copied! namespace. They require their image webapp-color:v1 📋 Copied! to be deployed as a container in a Deployment named cr4zy-app 📋 Copied! . The deployment should update its Pods using the Recreate 📋 Copied! strategy. As the load on the application can vary drastically during the day, you suggest using horizontal autoscaling. Configure the cr4zy-app 📋 Copied! Deployment with horizontal autoscaling. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%. Previous Next","headline":"CKAD exam 1","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/mock-exams/ckad1/"},"url":"http://localhost:4000/mock-exams/ckad1/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2026-04-10T22:42:55+02:00","datePublished":"2026-04-10T22:42:55+02:00","description":"CKAD Exam Instructions Before starting the exam, you must have a working MiniKube cluster. You must be able to add MiniKube nodes. Read all questions carefully. You can navigate through questions using the Next/Previous buttons. The bar at the top of the screen will show you the rough amount of time remaining. Total time is 2 hours. Start Exam Create 3 Pods with names nginx1 📋 Copied! , nginx2 📋 Copied! , and nginx3 📋 Copied! in the namespace 104ab4 📋 Copied! running nginx:latest 📋 Copied! . Label nginx1 with app=nginx 📋 Copied! . Annotate nginx2 with ingress=enabled 📋 Copied! . Completely unlabel the nginx3 Pod. You are a member of team-blue and must prepare a compute node designed only for team-blue deployments. Create a new minikube Node named blue 📋 Copied! , with the command minikube node add blue 📋 Copied! . Add a taint to the blue 📋 Copied! node that avoids scheduling any Pods on that node. Create a Deployment named blue-dedicated-node 📋 Copied! in the namespace team-blue 📋 Copied! that tolerates the taint on the blue 📋 Copied! node and is scheduled on that node. Team Cr4zy has requested their image to be deployed on the team-cr4zy 📋 Copied! namespace. They require their image webapp-color:v1 📋 Copied! to be deployed as a container in a Deployment named cr4zy-app 📋 Copied! . The deployment should update its Pods using the Recreate 📋 Copied! strategy. As the load on the application can vary drastically during the day, you suggest using horizontal autoscaling. Configure the cr4zy-app 📋 Copied! Deployment with a horizontal autoscaler. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%. A new version of a web application your company is hosting is available. You are tasked with verifying that the new version of the application can reliably serve traffic. You will do this by creating a so-called canary Deployment. Using this method, the new version of the application is spun up and serves traffic next to the old version of the application. Create a Deployment called application 📋 Copied! with image hashicorp/http-echo:v0.2.2 📋 Copied! , and a Deployment called canary 📋 Copied! with image hashicorp/http-echo:v0.2.3 📋 Copied! both on a new namespace loadbalance 📋 Copied! . Configure a Service that balances the load over the two Deployments in such a way that 75% of the traffic reaches the stable version ( hashicorp/http-echo:v0.2.2 📋 Copied! ) and 25% reaches the canary version ( hashicorp/http-echo:v0.2.3 📋 Copied! ) Deployment. Optional: you can verify your solution by adding the following configuration to your Deployments: 1 2 3 4 5 6 args: [&quot;-text&quot;, &quot;Hello from Pod $(POD_NAME)&quot;] env: - name: POD_NAME valueFrom: fieldRef: fieldPath: metadata.name The image should then respond to API GET Requests with the Pod name that handled the request. As a member of Team Slyce you are responsible for creating PostgreSQL database backups and cleaning up old log files. Both the backup and cleanup Jobs must happen on a regular schedule. The requirements of the two jobs are as follows: A CronJob named db-backup 📋 Copied! must exist in the pg-slyce 📋 Copied! namespace. It should run the image postgres:15.17-trixie 📋 Copied! and schedule a Job every night at 02:00 AM. The db-backup 📋 Copied! CronJob may never run any Jobs at the same time. The db-backup 📋 Copied! CronJob should should always keep the last 7 successful, and last 7 failed Jobs. A CronJob named db-cleanup 📋 Copied! must exist in the pg-slyce 📋 Copied! namespace. It should also run the image postgres:15.17-trixie 📋 Copied! . The db-cleanup 📋 Copied! CronJob must run once per week on Sunday at 05:00 AM. The Jobs created by the db-cleanup 📋 Copied! CronJob should have a maximum of 3 retries upon failure. The container itself must never be allowed to Restart. Create both CronJobs according to the specifications mentioned above. You received a message from a developer that Kyverno flagged a Pod in the acceptance 📋 Copied! namespace in another Kubernetes cluster for violating some of the security policies. You do not have access to that Kubernetes cluster, but the developer does send you a log of Error messages: error: resource was rejected by Kyverno: resource Pod/acceptance/insecure-pod failed policy strict-policy: - runAsNonRoot: container c1 must not run as root (UID 0) - seccompProfile: container c1 must have a seccomp profile set to RuntimeDefault - allowPrivilegeEscalation: container c1 must not allow privilege escalation - readOnlyRootFilesystem: container c1 must have a read-only root filesystem - capabilities: container c1 must drop ALL capabilities and only add approved capabilities Show the developer how to implement a Pod with the correct security context. Deploy a Pod to the acceptance 📋 Copied! namespace in your cluster that conforms to all the security policies that are mentioned above. You can name the Pod dev-security-demo 📋 Copied! , and for demonstration purposes can use the image nginx:latest 📋 Copied! . Previous Next","headline":"CKAD exam 1","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/mock-exams/ckad1/"},"url":"http://localhost:4000/mock-exams/ckad1/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -667,7 +667,8 @@
       <span class="copy-icon">📋</span>
       <span class="copy-tooltip">Copied!</span>
     </span>
-    . The deployment should update its Pods using the 
+    . 
+The deployment should update its Pods using the 
     <span class="copy-snippet" data-copy="Recreate">
       <span class="copy-text">Recreate</span>
       <span class="copy-icon">📋</span>
@@ -682,7 +683,240 @@ As the load on the application can vary drastically during the day, you suggest 
       <span class="copy-icon">📋</span>
       <span class="copy-tooltip">Copied!</span>
     </span>
-     Deployment with horizontal autoscaling. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%.</p>
+     Deployment with a horizontal autoscaler. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%.</p>
+
+
+</div>
+
+  </div>
+
+<div class="question-page" data-index="3" style="display: none;">
+    
+
+
+<div class="question-text">
+
+
+
+
+
+
+
+<p>A new version of a web application your company is hosting is available. You are tasked with verifying that the new version of the application can reliably serve traffic. 
+You will do this by creating a so-called <em>canary</em> Deployment. Using this method, the new version of the application is spun up and serves traffic next to the old version of the application.</p>
+
+<p>Create a Deployment called 
+    <span class="copy-snippet" data-copy="application">
+      <span class="copy-text">application</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+     with image 
+    <span class="copy-snippet" data-copy="hashicorp/http-echo:v0.2.2">
+      <span class="copy-text">hashicorp/http-echo:v0.2.2</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+    , and a Deployment called 
+    <span class="copy-snippet" data-copy="canary">
+      <span class="copy-text">canary</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+     with image 
+    <span class="copy-snippet" data-copy="hashicorp/http-echo:v0.2.3">
+      <span class="copy-text">hashicorp/http-echo:v0.2.3</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+     both on a new namespace 
+    <span class="copy-snippet" data-copy="loadbalance">
+      <span class="copy-text">loadbalance</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+    . 
+Configure a Service that balances the load over the two Deployments in such a way that 75% of the traffic reaches the stable version (
+    <span class="copy-snippet" data-copy="hashicorp/http-echo:v0.2.2">
+      <span class="copy-text">hashicorp/http-echo:v0.2.2</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+    ) 
+and 25% reaches the canary version (
+    <span class="copy-snippet" data-copy="hashicorp/http-echo:v0.2.3">
+      <span class="copy-text">hashicorp/http-echo:v0.2.3</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+    ) Deployment.</p>
+
+<p><strong>Optional</strong>: you can verify your solution by adding the following configuration to your Deployments:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="code-header">
+        <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre>    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">-text"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">Hello</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">Pod</span><span class="nv"> </span><span class="s">$(POD_NAME)"</span><span class="pi">]</span>
+    <span class="na">env</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">POD_NAME</span>
+      <span class="na">valueFrom</span><span class="pi">:</span>
+        <span class="na">fieldRef</span><span class="pi">:</span>
+          <span class="na">fieldPath</span><span class="pi">:</span> <span class="s">metadata.name</span>
+</pre></td></tr></tbody></table></code></div></div>
+
+<p>The image should then respond to API GET Requests with the Pod name that handled the request.</p>
+
+
+</div>
+
+  </div>
+
+<div class="question-page" data-index="4" style="display: none;">
+    
+
+
+<div class="question-text">
+
+
+
+
+
+
+
+<p>As a member of Team Slyce you are responsible for creating PostgreSQL database backups and cleaning up old log files. Both the backup and cleanup Jobs must happen on a regular schedule. 
+The requirements of the two jobs are as follows:</p>
+<ul>
+  <li>A CronJob named 
+  <span class="copy-snippet" data-copy="db-backup">
+    <span class="copy-text">db-backup</span>
+    <span class="copy-icon">📋</span>
+    <span class="copy-tooltip">Copied!</span>
+  </span>
+   must exist in the 
+  <span class="copy-snippet" data-copy="pg-slyce">
+    <span class="copy-text">pg-slyce</span>
+    <span class="copy-icon">📋</span>
+    <span class="copy-tooltip">Copied!</span>
+  </span>
+   namespace. It should run the image 
+  <span class="copy-snippet" data-copy="postgres:15.17-trixie">
+    <span class="copy-text">postgres:15.17-trixie</span>
+    <span class="copy-icon">📋</span>
+    <span class="copy-tooltip">Copied!</span>
+  </span>
+   and schedule a Job every night at 02:00 AM.</li>
+  <li>The 
+  <span class="copy-snippet" data-copy="db-backup">
+    <span class="copy-text">db-backup</span>
+    <span class="copy-icon">📋</span>
+    <span class="copy-tooltip">Copied!</span>
+  </span>
+   CronJob may never run any Jobs at the same time.</li>
+  <li>
+    <p>The 
+  <span class="copy-snippet" data-copy="db-backup">
+    <span class="copy-text">db-backup</span>
+    <span class="copy-icon">📋</span>
+    <span class="copy-tooltip">Copied!</span>
+  </span>
+   CronJob should should always keep the last 7 successful, and last 7 failed Jobs.</p>
+  </li>
+  <li>A CronJob named 
+  <span class="copy-snippet" data-copy="db-cleanup">
+    <span class="copy-text">db-cleanup</span>
+    <span class="copy-icon">📋</span>
+    <span class="copy-tooltip">Copied!</span>
+  </span>
+   must exist in the 
+  <span class="copy-snippet" data-copy="pg-slyce">
+    <span class="copy-text">pg-slyce</span>
+    <span class="copy-icon">📋</span>
+    <span class="copy-tooltip">Copied!</span>
+  </span>
+   namespace. It should also run the image 
+  <span class="copy-snippet" data-copy="postgres:15.17-trixie">
+    <span class="copy-text">postgres:15.17-trixie</span>
+    <span class="copy-icon">📋</span>
+    <span class="copy-tooltip">Copied!</span>
+  </span>
+  .</li>
+  <li>The 
+  <span class="copy-snippet" data-copy="db-cleanup">
+    <span class="copy-text">db-cleanup</span>
+    <span class="copy-icon">📋</span>
+    <span class="copy-tooltip">Copied!</span>
+  </span>
+   CronJob must run once per week on Sunday at 05:00 AM.</li>
+  <li>The Jobs created by the 
+  <span class="copy-snippet" data-copy="db-cleanup">
+    <span class="copy-text">db-cleanup</span>
+    <span class="copy-icon">📋</span>
+    <span class="copy-tooltip">Copied!</span>
+  </span>
+   CronJob should have a maximum of 3 retries upon failure. The container itself must never be allowed to Restart.</li>
+</ul>
+
+<p>Create both CronJobs according to the specifications mentioned above.</p>
+
+
+</div>
+
+  </div>
+
+<div class="question-page" data-index="5" style="display: none;">
+    
+
+
+<div class="question-text">
+
+
+
+
+
+
+
+<p>You received a message from a developer that Kyverno flagged a Pod in the 
+    <span class="copy-snippet" data-copy="acceptance">
+      <span class="copy-text">acceptance</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+     namespace in another Kubernetes cluster for violating some of the security policies. 
+You do not have access to that Kubernetes cluster, but the developer does send you a log of Error messages:</p>
+
+<pre><code class="language-log">error: resource was rejected by Kyverno: resource Pod/acceptance/insecure-pod failed policy strict-policy: 
+- runAsNonRoot: container c1 must not run as root (UID 0)
+- seccompProfile: container c1 must have a seccomp profile set to RuntimeDefault
+- allowPrivilegeEscalation: container c1 must not allow privilege escalation
+- readOnlyRootFilesystem: container c1 must have a read-only root filesystem
+- capabilities: container c1 must drop ALL capabilities and only add approved capabilities
+</code></pre>
+
+<p>Show the developer how to implement a Pod with the correct security context. Deploy a Pod to the 
+    <span class="copy-snippet" data-copy="acceptance">
+      <span class="copy-text">acceptance</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+     namespace in your cluster that conforms to all the security policies that are mentioned above. 
+You can name the Pod 
+    <span class="copy-snippet" data-copy="dev-security-demo">
+      <span class="copy-text">dev-security-demo</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+    , and for demonstration purposes can use the image 
+    <span class="copy-snippet" data-copy="nginx:latest">
+      <span class="copy-text">nginx:latest</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+    .</p>
 
 
 </div>
