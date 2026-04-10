@@ -1,5 +1,21 @@
-ckad1_intro:
-  text: "Welcome to the CKAD 1 mock-exam. For this exam you must have minikube ready. For this exam some additional things must be ready. Add one node to the cluster called node01. "
+ckad1_labels_and_pods:
+  text: |
+    Create 3 Pods with names {{nginx1}}, {{nginx2}}, and {{nginx3}} in the namespace {{104ab4}} running {{nginx:latest}}. 
+    - Label nginx1 with {{app=nginx}}. 
+    - Annotate nginx2 with {{ingress=enabled}}. 
+    - Completely unlabel the nginx3 Pod.
 
-q1:
-  text: "On the namespace x, do y."
+ckad1_nodes_and_taints:
+  text: |
+    You are a member of team-blue and must prepare a compute node designed only for team-blue deployments. 
+    
+    - Create a new minikube Node named {{blue}}, with the command {{minikube node add blue}}. 
+    - Add a taint to the {{blue}} node that avoids scheduling any Pods on that node. 
+    - Create a Deployment named {{blue-dedicated-node}} in the namespace {{team-blue}} that tolerates the taint on the {{blue}} node and is scheduled on that node.
+
+ckad1_deployments_and_autoscaling:
+  text: |
+    Team Cr4zy has requested their image to be deployed on the {{team-cr4zy}} namespace. They require their image {{webapp-color:v1}} to be deployed as a container in a Deployment named {{cr4zy-app}}. The deployment should update its Pods using the {{Recreate}} strategy.
+    As the load on the application can vary drastically during the day, you suggest using horizontal autoscaling. 
+    
+    Configure the {{cr4zy-app}} Deployment with horizontal autoscaling. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%.

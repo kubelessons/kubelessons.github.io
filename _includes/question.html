@@ -1,9 +1,39 @@
 {% assign qdata = site.data.questions[include.id] %}
 
 {% if qdata %}
-  <div class="question">
-    <p><strong>{{ qdata.text }}</strong></p>
-  </div>
+<div class="question-text">
+
+{% assign segments = qdata.text | split: "{{" %}
+
+{% assign output = "" %}
+
+{% for segment in segments %}
+
+  {% if forloop.first %}
+    {% assign output = output | append: segment %}
+  {% else %}
+
+    {% assign parts = segment | split: "}}" %}
+    {% assign cmd = parts[0] %}
+    {% assign rest = parts[1] %}
+
+    {% capture snippet %}
+    <span class="copy-snippet" data-copy="{{ cmd }}">
+      <span class="copy-text">{{ cmd }}</span>
+      <span class="copy-icon">📋</span>
+      <span class="copy-tooltip">Copied!</span>
+    </span>
+    {% endcapture %}
+
+    {% assign output = output | append: snippet | append: rest %}
+
+  {% endif %}
+
+{% endfor %}
+
+{{ output | markdownify }}
+
+</div>
 {% else %}
   <p style="color:red;">Question not found: {{ include.id }}</p>
 {% endif %}
