@@ -11,7 +11,7 @@ ckad1_nodes_and_taints:
     
     - Create a new minikube Node named {{blue}}, with the command {{minikube node add blue}}. 
     - Add a taint to the {{blue}} node that avoids scheduling any Pods on that node. 
-    - Create a Deployment named {{blue-dedicated-node}} in the namespace {{team-blue}} that tolerates the taint on the {{blue}} node and is scheduled on that node.
+    - Create a Deployment named {{blue-dedicated-node}} in the namespace {{team-blue}} that tolerates the taint on the {{blue}} node and is also scheduled on that node.
 
 ckad1_deployments_and_autoscaling:
   text: |
@@ -64,12 +64,160 @@ ckad1_restricted_namespace:
 
     ```log
     error: resource was rejected by Kyverno: resource Pod/acceptance/insecure-pod failed policy strict-policy: 
-    - runAsNonRoot: container c1 must not run as root (UID 0)
-    - seccompProfile: container c1 must have a seccomp profile set to RuntimeDefault
-    - allowPrivilegeEscalation: container c1 must not allow privilege escalation
-    - readOnlyRootFilesystem: container c1 must have a read-only root filesystem
-    - capabilities: container c1 must drop ALL capabilities and only add approved capabilities
+    - runAsNonRoot: container c1 must not run as root (UID 0).
+    - seccompProfile: container c1 must have a seccomp profile set to RuntimeDefault.
+    - allowPrivilegeEscalation: container c1 must not allow privilege escalation.
+    - readOnlyRootFilesystem: container c1 must have a read-only root filesystem.
+    - capabilities: container c1 must drop ALL capabilities.
     ```
 
     Show the developer how to implement a Pod with the correct security context. Deploy a Pod to the {{acceptance}} namespace in your cluster that conforms to all the security policies that are mentioned above. 
     You can name the Pod {{dev-security-demo}}, and for demonstration purposes can use the image {{nginx:latest}}.
+
+ckad1_serviceaccount_capture_the_flag:
+  text: |
+    You are investigating Kubernetes credentials inside Pods. You must create a workload and identify the token that this workload uses to talk to the kube-apiserver.
+
+    - Create a namespace called {{ctf}}
+    - Create a ServiceAccount named {{inspector}}
+    - Create a Pod in the {{ctf}} namespace named {{app}} with
+      - image: {{busybox:latest}}
+      - command: {{sleep 3600}}
+      - serviceAccount: {{inspector}}
+    - Place the token that exists in the Pod inside the file {{~/ckad1/ctf}}
+
+ckad1_identify_deployment_issues:
+  text: |
+    You are contacted by a developer from team June-Ior requesting help in troubleshooting his Deployment manifest. 
+    Identify and fix all issues in the Deployment manifest and then apply it to your Kubernetes cluster on the {{june-ior}} namespace. 
+    You must ensure that all Pods reach a Running & Ready state. You cannot delete the initContainer, livenessProbe, or readinessProbes, but you can change them.
+
+    ```yaml
+    apiVersion: v1
+    kind: Deployment
+    metadata:
+      name: web-app
+      namespace: june-ior
+    spec:
+      replicas 2
+      selector:
+        matchLabels:
+          app: web
+      template:
+        metadata:
+          labels:
+            app: web
+        spec:
+          initContainers:
+          - name: init-check
+            image: busybox:1.36
+            command: ['sh','-c','echo init']
+            imagePullPolicy: Never
+          containers:
+          - name: web
+            image: nginx:last
+              ports:
+              - containerPort: "eighty"
+            livenessProbe:
+              httpGet:
+                path: /health
+                port: 8080
+            readinessProbe:
+              exec:
+                command: ["cat", "/tmp/healthy"]
+              initialDelaySeconds: "five"
+          restartPolicy: Always
+      strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: None
+        maxSurge: 1
+    ```
+
+ckad1_daemonsets_tls_secrets_observability:
+  text: |
+    As part of the monitoring team, you must collect metrics from every node in the Kubernetes cluster using {{prom/node-exporter}}.
+    Because metrics are sensitive, the endpoint must be secured using TLS.
+
+    Create all resources on the {{monitoring}} namespace.
+
+    You devise a plan for achieving this:
+
+    - Create a TLS secret called {{node-exporter-tls}} containing a certificate and key. You can generate a certificate and key with openssl:
+      ```bash
+        openssl req -x509 -nodes -days 365 \
+          -newkey rsa:2048 \
+          -keyout tls.key \
+          -out tls.crt \
+          -subj "/CN=localhost"
+      ```
+    - Create a ConfigMap called {{node-exporter-config}} containing a file called {{web-config.yml}} with the following content:
+    ```yml
+      tls_server_config:
+        cert_file: /etc/node-exporter/tls/tls.crt
+        key_file: /etc/node-exporter/tls/tls.key
+    ```
+
+    - Create a DaemonSet named {{node-exporter}} that:
+      - deploys one Pod on every node
+      - Every Pod uses the image {{prom/node-exporter:latest}}
+      - Passes the argument {{--web.config=/etc/node-exporter/web-config.yml}}
+      - Mounts the TLS secret {{node-exporter-tls}} on the mountPath {{/etc/node-exporter/tls}}
+      - Mounts the ConfigMap as a file on the mountPath {{/etc/node-exporter/web-config.yml}} (Hint: you might need {{subPath}}).
+
+    - The {{node-exporter}} container runs on port {{9100}}. Expose the {{node-exporter}} DaemonSet using a Service of type NodePort on port {{32000}}. 
+      From your local machine you should be able to {{curl -k https://localhost:32000}} and get a valid response.
+
+ckad1_namespace_limits:
+  text: |
+    A new development team will deploy workloads into a dedicated Kubernetes namespace. To prevent resource overuse, the cluster administrators want to enforce strict resource boundaries.
+
+    Create a namespace called {{limited}}. Create a ResourceQuota to enforce the below constraints on the {{limited}} namespace. You don't *need* to create any Pods.
+
+    - Maximum number of Pods: 5
+    - Maximum total CPU requests: 200m
+    - Maximum total CPU limits: 300m
+    - Maximum total Memory requests: 100Mi
+    - Maximum total Memory limits: 150Mi
+
+ckad1_readiness_liveness_tcp_probes:
+  text: |
+    A team is deploying a lightweight internal service that listens for TCP connections on port {{80}}. The application does not expose HTTP health endpoints, so TCP-based checks must be used instead.
+
+    The platform team wants to ensure:
+
+    - The container is restarted if it becomes unresponsive.
+    - The Pod only receives traffic when it is ready to accept connections.
+
+    Create a Pod in the {{default}} namespace with the name {{-app}}, the image {{nginx:alpine}}, and the container port {{80}}.
+
+    Configure a TCP Liveness probe with an initial delay of {{10}} seconds, and a period of {{5}} seconds.
+    Configure a TCP Readiness probe with an initial delay of {{2}} seconds, and a period of {{3}} seconds, and a failure threshold of {{1}}.
+
+ckad1_network_policies:
+  text: |
+    TODO: Netpol exercise
+
+ckad1_ingress:
+  text: |
+    TODO: Ingress exercise
+
+ckad1_helm:
+  text: |
+    TODO: Helm exercise
+
+ckad1_docker:
+  text: |
+    TODO: Docker exercise
+
+ckad1_roles_and_rolebindings:
+  text: |
+    TODO: Roles and Rolebindings exercise
+
+ckad1_set_env_from_configmap:
+  text: |
+    TODO: Set Env values in Deployment from ConfigMaps exercise
+
+ckad1_final_topic:
+  text: |
+    TODO: Admission control exercise?
