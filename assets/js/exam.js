@@ -18,23 +18,10 @@ function startExam() {
   current = 1;
   showQuestion(current);
 
-  document.getElementById("nav-buttons").style.display = "block";
+  document.getElementById("exam-intro").style.display = "none";
+  document.getElementById("exam-ui").style.display = "block";
 
   startTimer();
-}
-
-function nextQuestion() {
-  if (current < pages.length - 1) {
-    current++;
-    showQuestion(current);
-  }
-}
-
-function prevQuestion() {
-  if (current > 0) {
-    current--;
-    showQuestion(current);
-  }
 }
 
 function updateButtons() {
@@ -44,6 +31,63 @@ function updateButtons() {
   prevBtn.disabled = current <= 1;
   nextBtn.innerText = current === pages.length - 1 ? "Finish" : "Next";
   }
+
+const questionList = document.getElementById("question-list");
+const totalSpan = document.getElementById("total");
+const currentSpan = document.getElementById("current");
+
+const totalQuestions = pages.length - 1;
+
+totalSpan.innerText = totalQuestions;
+
+for (let i = 1; i <= totalQuestions; i++) {
+  const btn = document.createElement("div");
+  btn.className = "q-number";
+  btn.innerText = i;
+
+  btn.addEventListener("click", () => {
+    current = i;
+    showQuestion(current);
+  });
+
+  questionList.appendChild(btn);
+}
+
+function showQuestion(index) {
+  pages.forEach(p => p.style.display = "none");
+  pages[index].style.display = "block";
+
+  currentSpan.innerText = index;
+
+  const numbers = document.querySelectorAll(".q-number");
+
+  numbers.forEach((el, i) => {
+    el.classList.toggle("active", i === index - 1);
+  });
+
+  const active = document.querySelector(".q-number.active");
+  if (active) {
+    active.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest"
+    });
+  }
+}
+
+document.getElementById("prevArrow").addEventListener("click", () => {
+  if (current > 1) {
+    current--;
+    showQuestion(current);
+  }
+});
+
+document.getElementById("nextArrow").addEventListener("click", () => {
+  if (current < pages.length - 1) {
+    current++;
+    showQuestion(current);
+  }
+});
 
 function startTimer() {
   const bar = document.getElementById("timer-bar");
@@ -88,6 +132,4 @@ document.addEventListener("click", function(e) {
 });
 
 document.getElementById("startBtn").addEventListener("click", startExam);
-document.getElementById("nextBtn").addEventListener("click", nextQuestion);
-document.getElementById("prevBtn").addEventListener("click", prevQuestion);
 })
