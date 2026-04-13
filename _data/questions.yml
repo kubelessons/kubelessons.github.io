@@ -202,13 +202,16 @@ ckad1_network_policies:
     - They run a PostgreSQL database (as Pods with label {{type=database}}) in the {{busy-database}} namespace.
     - They run two web-api's (as Deployments, with Pod labels {{app=green}} for the {{green}} web-api, and with Pod labels {{app=blue}} for the {{blue}} web-api) in the {{busy-api}} namespace. 
 
-    As they are truly very busy, all the specifications you obtained are in a hastily scribbled note:
-    - Traffic between the {{green}} and the {{blue}} web-api Pods over port {{80}} **OK**. 
-    - Traffic between the {{green}} web-api deployment and the database over port {{5432}} **OK**. 
-    - Traffic between the {{blue}} web-api deployment and the database over port {{5432}} **NOT OK**. 
-    - All other traffic **NOT OK!!!**
 
-    Create the namespaces {{busy-database}} and {{busy-api}}. Create the network policies required to satisfy the above specifications. You do not need to deploy any databases or api's.
+    As they are truly very busy, all the specifications you obtained are in a hastily scribbled note:
+    - All ingress and egress traffic must be denied by default unless explicitly allowed via NetworkPolicies.
+    - Egress traffic from the {{green}} to the {{blue}} web-api Pods over port {{80}} **ALLOWED**. 
+    - Egress traffic from the {{green}} web-api Pods to the database over port {{5432}} **ALLOWED**.
+    - Ingress traffic to the database from the {{green}} web-api Pods over port {{5432}} **ALLOWED**.
+    - Ingress traffic to the database from the {{blue}} web-api Pods **NOT ALLOWED**. 
+
+    Create the namespaces {{busy-database}} and {{busy-api}}. Label {{busy-database}} with {{namespace=busy-database}} and label {{busy-api}} with {{namespace=busy-api}}. 
+    Create the network policies required to satisfy the above specifications. You do not need to deploy any databases or api's.
 
 ckad1_ingress:
   text: |
