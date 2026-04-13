@@ -14,12 +14,12 @@ timezone:
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Kubelessons # the main title
+title: KubeLessons # the main title
 
-tagline: For lessons in Kubernetes
+tagline: For Lessons in Kubernetes
 
 description: >- # used by seo meta and the atom feed
-  For lessons in Kubernetes.
+  For Lessons in Kubernetes.
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.

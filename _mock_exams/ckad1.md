@@ -20,7 +20,7 @@ questions:
   - ckad1_docker
   - ckad1_roles_and_rolebindings
   - ckad1_set_env_from_configmap
-  - ckad1_final_topic
+  - ckad1_linux_capabilities
 ---
 <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
@@ -53,11 +53,14 @@ questions:
 
 <div id="exam-intro">
   <div class="question-page intro-page" data-index="0">
-    <h2>CKAD Exam Instructions</h2>
-    <p>Before starting the exam, you must have a working MiniKube cluster. You must be able to add MiniKube nodes.</p>
-    <p>Read all questions carefully.</p>
-    <p>You can navigate through questions using the Next/Previous buttons.</p>
-    <p>The bar at the top of the screen will show you the rough amount of time remaining. Total time is 2 hours.</p>
+    <h2>CKAD Exam Instructions and Requirements</h2>
+    <p>You must have a working MiniKube cluster, and you must be able to add extra MiniKube nodes.</p>
+    <p>You must have a working Docker installation on your machine.</p>
+    <p>You must have Helm installed.</p>
+    <p>Read all questions carefully. Exercises must be done in the namespace requested.</p>
+    <p>You can navigate through questions using the buttons at the top of the screen.</p>
+    <p>The green bar will show you the rough amount of time remaining. </p>
+    <p>Total time is 2 hours for 18 questions.</p>
 
     <button id="startBtn">Start Exam</button>
   </div>

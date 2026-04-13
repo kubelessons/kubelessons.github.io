@@ -88,7 +88,7 @@ ckad1_serviceaccount_capture_the_flag:
 
 ckad1_identify_deployment_issues:
   text: |
-    You are contacted by a developer from team June-Ior requesting help in troubleshooting his Deployment manifest. 
+    You are contacted by a developer from team June-ior requesting help in troubleshooting his Deployment manifest. 
     Identify and fix all issues in the Deployment manifest and then apply it to your Kubernetes cluster on the {{june-ior}} namespace. 
     You must ensure that all Pods reach a Running & Ready state. You cannot delete the initContainer, livenessProbe, or readinessProbes, but you can change them.
 
@@ -189,14 +189,26 @@ ckad1_readiness_liveness_tcp_probes:
     - The container is restarted if it becomes unresponsive.
     - The Pod only receives traffic when it is ready to accept connections.
 
-    Create a Pod in the {{default}} namespace with the name {{-app}}, the image {{nginx:alpine}}, and the container port {{80}}.
+    Create a Pod in the {{default}} namespace with the name {{lightweight-app}}, the image {{nginx:alpine}}, and the container port {{80}}.
 
     Configure a TCP Liveness probe with an initial delay of {{10}} seconds, and a period of {{5}} seconds.
     Configure a TCP Readiness probe with an initial delay of {{2}} seconds, and a period of {{3}} seconds, and a failure threshold of {{1}}.
 
 ckad1_network_policies:
   text: |
-    TODO: Netpol exercise
+    The busy-team has been security audited and was told to implement network policies to better control traffic inside their kubernetes cluster.
+    As they are very busy, this task was assigned to you. Their setup is as follows:
+
+    - They run a PostgreSQL database (as Pods with label {{type=database}}) in the {{busy-database}} namespace.
+    - They run two web-api's (as Deployments, with Pod labels {{app=green}} for the {{green}} web-api, and with Pod labels {{app=blue}} for the {{blue}} web-api) in the {{busy-api}} namespace. 
+
+    As they are truly very busy, all the specifications you obtained are in a hastily scribbled note:
+    - Traffic between the {{green}} and the {{blue}} web-api Pods over port {{80}} **OK**. 
+    - Traffic between the {{green}} web-api deployment and the database over port {{5432}} **OK**. 
+    - Traffic between the {{blue}} web-api deployment and the database over port {{5432}} **NOT OK**. 
+    - All other traffic **NOT OK!!!**
+
+    Create the namespaces {{busy-database}} and {{busy-api}}. Create the network policies required to satisfy the above specifications. You do not need to deploy any databases or api's.
 
 ckad1_ingress:
   text: |
@@ -204,20 +216,57 @@ ckad1_ingress:
 
 ckad1_helm:
   text: |
-    TODO: Helm exercise
+    *For this question, you are allowed to use the following url and sub-directories for information:* {{https://github.com/grafana-community/helm-charts/tree/main/charts/grafana}}.
+
+    <br />
+
+    Add the {{grafana-community}} Helm repository {{https://grafana-community.github.io/helm-charts}}.
+
+    Install Grafana using Helm, and give it the name {{grafana-dev}}. Configure the chart such that the service type is {{NodePort}}, and the admin password is set to {{swordfish17}}.
+
+    After installation, upgrade the {{grafana-dev}} Helm chart such that the service type is now {{ClusterIP}}.
 
 ckad1_docker:
   text: |
-    TODO: Docker exercise
+    Given the {{index.html}} file with the contents:
+    ```html
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Hello CKAD</title>
+    </head>
+    </html>
+    ```
+    Create a Dockerfile and the above {{index.html}} file in the {{~/ckad1/q15/docker}} folder. The Dockerfile should use the {{nginx:latest}} image, 
+    and should copy the {{index.html}} file to {{/usr/share/nginx/html/index.html}}.
+
+    Build a Docker image from the Dockerfile you created, and give it the name {{dev-app}} and tag it with {{v0.0.1}}. 
+    Save the image as a {{tar}} archive in the the directory {{~/ckad1/q15/image}} with the name {{dev-app.tar}}.
 
 ckad1_roles_and_rolebindings:
   text: |
-    TODO: Roles and Rolebindings exercise
+    A GitOps controller (e.g. FluxCD) will be run by the platform team in the {{iota}} namespace and must only be able to read Pods in that namespace. 
+    The controller will use the service account named {{controller-sa}}. 
+    
+    Configure the required access controls on the {{iota}} namespace.
 
 ckad1_set_env_from_configmap:
   text: |
-    TODO: Set Env values in Deployment from ConfigMaps exercise
+    Create a ConfigMap named {{app-config}} in the {{default}} namespace containing the following key-value pairs:
+    - APP_COLOR=blue
+    - APP_MODE=test
+    - APP_DEBUG=true
 
-ckad1_final_topic:
+    Create a Deployment named {{configured-app}} in the {{default}} namespace running the image {{nginx:1.25}} and {{2}} replicas.
+
+    Expose the ConfigMap values as environment variables inside the container.
+    Additional requirement: 
+    - The environment variable names inside the container must match the ConfigMap keys, but with the "APP_" prefix removed.
+      (e.g., APP_COLOR → COLOR).
+
+
+ckad1_linux_capabilities:
   text: |
-    TODO: Admission control exercise?
+    Create a Deployment named {{secure-app}} in the {{capabilities}} namespace, run it with {{nginx:latest}} for testing purposes.
+
+    The application inside the container requires the ability to bind to privileged ports (<1024). Add the {{NET_BIND_SERVICE}} capability to the container, and no other capabilities.
