@@ -2,9 +2,9 @@
 
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://localhost:4000/</id>
-  <title>Kubelessons</title>
-  <subtitle>For lessons in Kubernetes.</subtitle>
-  <updated>2026-04-11T22:15:52+02:00</updated>
+  <title>KubeLessons</title>
+  <subtitle>For Lessons in Kubernetes.</subtitle>
+  <updated>2026-04-13T21:19:24+02:00</updated>
   <author>
     <name>kubelessons</name>
     <uri>http://localhost:4000/</uri>

@@ -1,9 +1,9 @@
 
 
 {
-  "name": "Kubelessons",
-  "short_name": "Kubelessons",
-  "description": "For lessons in Kubernetes.",
+  "name": "KubeLessons",
+  "short_name": "KubeLessons",
+  "description": "For Lessons in Kubernetes.",
   "icons": [
     {
       "src": "/assets/img/favicons/web-app-manifest-192x192.png",
