@@ -9,14 +9,18 @@ ckad1_nodes_and_taints:
   text: |
     You are a member of team-blue and must prepare a compute node designed only for team-blue deployments. 
     
-    - Create a new minikube Node named {{blue}}, with the command {{minikube node add blue}}. 
-    - Add a taint to the {{blue}} node that avoids scheduling any Pods on that node. 
-    - Create a Deployment named {{blue-dedicated-node}} in the namespace {{team-blue}} that tolerates the taint on the {{blue}} node and is also scheduled on that node.
+    - Create the namespace {{team-blue}}.
+    - Create a new minikube Node named {{blue}} and label it with {{node=dedicated}}. For minikube, you can use the command {{minikube node add blue}}. 
+    - Add a taint to the {{blue}} node with {{node=dedicated}} and the {{NoSchedule}} effect. 
+    - Create a Deployment named {{blue-dedicated-node}}, with the image {{nginx:latest}} in the namespace {{team-blue}}.
+    - Ensure the Deployment:
+      - Tolerates the taint on the node.
+      - Is scheduled only on the node labeled {{node=dedicated}}.
 
 ckad1_deployments_and_autoscaling:
   text: |
-    Team Cr4zy has requested their image to be deployed on the {{team-cr4zy}} namespace. They require their image {{webapp-color:v1}} to be deployed as a container in a Deployment named {{cr4zy-app}}. 
-    The deployment should update its Pods using the {{Recreate}} strategy.
+    Team Cr4zy has requested their application to be deployed in a namespace named {{team-cr4zy}}, which you must create. They use the image {{webapp-color:v1}} and require a Deployment named {{cr4zy-app}}. 
+    The deployment should update its Pods using the {{Recreate}} strategy. Every Pod created by the deployment should request {{100m}} CPU.
     As the load on the application can vary drastically during the day, you suggest using horizontal autoscaling. 
     
     Configure the {{cr4zy-app}} Deployment with a horizontal autoscaler. Configure the autoscaler to deploy between 2-5 Pods, with a target CPU utilization of 75%.
@@ -45,11 +49,12 @@ ckad1_canary_and_loadbalancing:
 
 ckad1_cronjobs:
   text: |
-    As a member of Team Slyce you are responsible for creating PostgreSQL database backups and cleaning up old log files. Both the backup and cleanup Jobs must happen on a regular schedule. 
+    As a member of Team Slyce you are responsible for creating PostgreSQL database backups and cleaning up old log files. Team Slyce operates in the {{pg-slice}} namespace, that you must create. 
+    Both the backup and cleanup Jobs must happen on a regular schedule. 
     The requirements of the two jobs are as follows:
     - A CronJob named {{db-backup}} must exist in the {{pg-slyce}} namespace. It should run the image {{postgres:15.17-trixie}} and schedule a Job every night at 02:00 AM.
-    - The {{db-backup}} CronJob may never run any Jobs at the same time.
-    - The {{db-backup}} CronJob should should always keep the last 7 successful, and last 7 failed Jobs.
+    - The {{db-backup}} CronJob must not allow concurrent Jobs to run.
+    - The {{db-backup}} CronJob should always keep the last 7 successful, and last 7 failed Jobs.
 
     - A CronJob named {{db-cleanup}} must exist in the {{pg-slyce}} namespace. It should also run the image {{postgres:15.17-trixie}}.
     - The {{db-cleanup}} CronJob must run once per week on Sunday at 05:00 AM.
@@ -78,13 +83,14 @@ ckad1_serviceaccount_capture_the_flag:
   text: |
     You are investigating Kubernetes credentials inside Pods. You must create a workload and identify the token that this workload uses to talk to the kube-apiserver.
 
-    - Create a namespace called {{ctf}}
-    - Create a ServiceAccount named {{inspector}}
+    - Create a namespace called {{ctf}}.
+    - Create a ServiceAccount named {{inspector}} in the {{ctf}} namespace.
     - Create a Pod in the {{ctf}} namespace named {{app}} with
       - image: {{busybox:latest}}
       - command: {{sleep 3600}}
-      - serviceAccount: {{inspector}}
-    - Place the token that exists in the Pod inside the file {{~/ckad1/ctf}}
+      - with service account: {{inspector}}
+    - Identify the ServiceAccount JWT token mounted inside the Pod.
+    - Save the value of the token inside the file {{~/token.txt}}.
 
 ckad1_identify_deployment_issues:
   text: |
@@ -93,57 +99,56 @@ ckad1_identify_deployment_issues:
     You must ensure that all Pods reach a Running & Ready state. You cannot delete the initContainer, livenessProbe, or readinessProbes, but you can change them.
 
     ```yaml
-    apiVersion: v1
+    apiVersion: apps/v1
     kind: Deployment
     metadata:
       name: web-app
-      namespace: june-ior
+      namespace: dev-team
     spec:
-      replicas 2
+      replicas: 2
       selector:
         matchLabels:
           app: web
       template:
         metadata:
           labels:
-            app: web
+            app: nginx
         spec:
-          initContainers:
-          - name: init-check
-            image: busybox:1.36
-            command: ['sh','-c','echo init']
-            imagePullPolicy: Never
           containers:
           - name: web
             image: nginx:last
-              ports:
-              - containerPort: "eighty"
+            ports:
+            - containerPort: 8080
             livenessProbe:
               httpGet:
-                path: /health
-                port: 8080
+                path: /healthz
+                port: "8080"
             readinessProbe:
-              exec:
-                command: ["cat", "/tmp/healthy"]
-              initialDelaySeconds: "five"
-          restartPolicy: Always
+              httpGet:
+                path: /ready
+                port: 8080
+        restartPolicy: Never
       strategy:
-      type: RollingUpdate
-      rollingUpdate:
-        maxUnavailable: None
-        maxSurge: 1
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 1
+          maxSurge: 1
     ```
 
 ckad1_daemonsets_tls_secrets_observability:
   text: |
-    As part of the monitoring team, you must collect metrics from every node in the Kubernetes cluster using {{prom/node-exporter}}.
-    Because metrics are sensitive, the endpoint must be secured using TLS.
+    For this question create the namespace {{secure-logs}}.
 
-    Create all resources on the {{monitoring}} namespace.
+    Create a DaemonSet with the following requirements:
+    - Runs on all nodes.
+    - uses the image nginx:1.25-alpine.
+    - Mounts a Secret volume at /etc/tls named {{tls-volume}} inside the container.
 
-    You devise a plan for achieving this:
-
-    - Create a TLS secret called {{node-exporter-tls}} containing a certificate and key. You can generate a certificate and key with openssl:
+    You must create a TLS secret in the {{secure-logs}} namespace with these requirements:
+    - Secret name must be {{tls-secret}}.
+    - Must be of type {{kubernetes.io/tls}}.
+    - Contains {{tls.crt}} and {{tls.key}}.
+    - You can generate a certificate and key with openssl:
       ```bash
         openssl req -x509 -nodes -days 365 \
           -newkey rsa:2048 \
@@ -151,22 +156,10 @@ ckad1_daemonsets_tls_secrets_observability:
           -out tls.crt \
           -subj "/CN=localhost"
       ```
-    - Create a ConfigMap called {{node-exporter-config}} containing a file called {{web-config.yml}} with the following content:
-    ```yml
-      tls_server_config:
-        cert_file: /etc/node-exporter/tls/tls.crt
-        key_file: /etc/node-exporter/tls/tls.key
-    ```
 
-    - Create a DaemonSet named {{node-exporter}} that:
-      - deploys one Pod on every node
-      - Every Pod uses the image {{prom/node-exporter:latest}}
-      - Passes the argument {{--web.config=/etc/node-exporter/web-config.yml}}
-      - Mounts the TLS secret {{node-exporter-tls}} on the mountPath {{/etc/node-exporter/tls}}
-      - Mounts the ConfigMap as a file on the mountPath {{/etc/node-exporter/web-config.yml}} (Hint: you might need {{subPath}}).
-
-    - The {{node-exporter}} container runs on port {{9100}}. Expose the {{node-exporter}} DaemonSet using a Service of type NodePort on port {{32000}}. 
-      From your local machine you should be able to {{curl -k https://localhost:32000}} and get a valid response.
+    You must mount the secret inside the container at {{/etc/tls}}, and files must be {{read-only}}. Ensure that the secret keys appear as files:
+    - {{/etc/tls/tls.crt}}
+    - {{/etc/tls/tls.key}}
 
 ckad1_namespace_limits:
   text: |
@@ -182,14 +175,14 @@ ckad1_namespace_limits:
 
 ckad1_readiness_liveness_tcp_probes:
   text: |
-    A team is deploying a lightweight internal service that listens for TCP connections on port {{80}}. The application does not expose HTTP health endpoints, so TCP-based checks must be used instead.
+    A team is deploying a lightweight internal service that listens for TCP connections on port {{80}}. The application does not expose HTTP health endpoints, so health checks must be performed using TCP socker probes.
 
     The platform team wants to ensure:
 
     - The container is restarted if it becomes unresponsive.
-    - The Pod only receives traffic when it is ready to accept connections.
+    - The Pod only receives traffic when it is ready to accept TCP connections.
 
-    Create a Pod in the {{default}} namespace with the name {{lightweight-app}}, the image {{nginx:alpine}}, and the container port {{80}}.
+    Create a Pod in the {{default}} namespace with the name {{lightweight-app}}, the image {{nginx:alpine}}, container name {{app}}, and the container port {{80}}.
 
     Configure a TCP Liveness probe with an initial delay of {{10}} seconds, and a period of {{5}} seconds.
     Configure a TCP Readiness probe with an initial delay of {{2}} seconds, and a period of {{3}} seconds, and a failure threshold of {{1}}.
@@ -225,7 +218,9 @@ ckad1_helm:
 
     Add the {{grafana-community}} Helm repository {{https://grafana-community.github.io/helm-charts}}.
 
-    Install Grafana using Helm, and give it the name {{grafana-dev}}. Configure the chart such that the service type is {{NodePort}}, and the admin password is set to {{swordfish17}}.
+    - Create the namespace {{grafana-dev}}.
+    - Install Grafana using Helm, and give it the name {{grafana-dev}}. 
+    - Configure the chart such that the service type is {{NodePort}}, and the admin password is set to {{swordfish17}}.
 
     After installation, upgrade the {{grafana-dev}} Helm chart such that the service type is now {{ClusterIP}}.
 
@@ -251,7 +246,7 @@ ckad1_roles_and_rolebindings:
     A GitOps controller (e.g. FluxCD) will be run by the platform team in the {{iota}} namespace and must only be able to read Pods in that namespace. 
     The controller will use the service account named {{controller-sa}}. 
     
-    Configure the required access controls on the {{iota}} namespace.
+    Create the required ServiceAccount, Role, and RoleBinding on the {{iota}} namespace.
 
 ckad1_set_env_from_configmap:
   text: |
