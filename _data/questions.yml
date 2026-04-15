@@ -103,7 +103,6 @@ ckad1_identify_deployment_issues:
     kind: Deployment
     metadata:
       name: web-app
-      namespace: dev-team
     spec:
       replicas: 2
       selector:
