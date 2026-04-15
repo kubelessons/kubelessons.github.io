@@ -49,7 +49,7 @@ ckad1_canary_and_loadbalancing:
 
 ckad1_cronjobs:
   text: |
-    As a member of Team Slyce you are responsible for creating PostgreSQL database backups and cleaning up old log files. Team Slyce operates in the {{pg-slice}} namespace, that you must create. 
+    As a member of Team Slyce you are responsible for creating PostgreSQL database backups and cleaning up old log files. Team Slyce operates in the {{pg-slyce}} namespace, that you must create. 
     Both the backup and cleanup Jobs must happen on a regular schedule. 
     The requirements of the two jobs are as follows:
     - A CronJob named {{db-backup}} must exist in the {{pg-slyce}} namespace. It should run the image {{postgres:15.17-trixie}} and schedule a Job every night at 02:00 AM.
