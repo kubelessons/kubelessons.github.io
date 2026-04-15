@@ -94,8 +94,8 @@ ckad1_serviceaccount_capture_the_flag:
 
 ckad1_identify_deployment_issues:
   text: |
-    You are contacted by a developer from team June-ior requesting help in troubleshooting his Deployment manifest. 
-    Identify and fix all issues in the Deployment manifest and then apply it to your Kubernetes cluster on the {{june-ior}} namespace. 
+    You are contacted by a developer from team June-ior requesting help in troubleshooting their Deployment manifest. 
+    Identify and fix all issues in the Deployment manifest and then apply it to your Kubernetes cluster on the {{june-ior}} namespace. You can create the namespace {{june-ior}} if it doesn't exist.
     You must ensure that all Pods reach a Running & Ready state. You cannot delete the initContainer, livenessProbe, or readinessProbes, but you can change them.
 
     ```yaml
@@ -118,16 +118,8 @@ ckad1_identify_deployment_issues:
           - name: web
             image: nginx:last
             ports:
-            - containerPort: 8080
-            livenessProbe:
-              httpGet:
-                path: /healthz
-                port: "8080"
-            readinessProbe:
-              httpGet:
-                path: /ready
-                port: 8080
-        restartPolicy: Never
+            - containerPort: "8080"
+      restartPolicy: Never
       strategy:
         type: RollingUpdate
         rollingUpdate:
@@ -175,7 +167,7 @@ ckad1_namespace_limits:
 
 ckad1_readiness_liveness_tcp_probes:
   text: |
-    A team is deploying a lightweight internal service that listens for TCP connections on port {{80}}. The application does not expose HTTP health endpoints, so health checks must be performed using TCP socker probes.
+    A team is deploying a lightweight internal service that listens for TCP connections on port {{80}}. The application does not expose HTTP health endpoints, so health checks must be performed using TCP socket probes.
 
     The platform team wants to ensure:
 
