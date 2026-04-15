@@ -31,7 +31,7 @@ ckad1_canary_and_loadbalancing:
     You will do this by creating a so-called *canary* Deployment. Using this method, the new version of the application is spun up and serves traffic next to the old version of the application.
 
     Create a Deployment called {{application}} with image {{hashicorp/http-echo:v0.2.2}}, and a Deployment called {{canary}} with image {{hashicorp/http-echo:v0.2.3}} both on a new namespace {{loadbalance}}. 
-    Configure a Service that balances the load over the two Deployments in such a way that 75% of the traffic reaches the stable version ({{hashicorp/http-echo:v0.2.2}}) 
+    Configure a Service that balances the load over the two Deployments. Configure the Deployments in such a way that 75% of the traffic reaches the stable version ({{hashicorp/http-echo:v0.2.2}}) 
     and 25% reaches the canary version ({{hashicorp/http-echo:v0.2.3}}) Deployment.
 
     **Optional**: you can verify your solution by adding the following configuration to your Deployments:
@@ -141,8 +141,8 @@ ckad1_daemonsets_tls_secrets_observability:
 
     Create a DaemonSet with the following requirements:
     - Runs on all nodes.
-    - uses the image nginx:1.25-alpine.
-    - Mounts a Secret volume at /etc/tls named {{tls-volume}} inside the container.
+    - uses the image {{nginx:1.25-alpine}}.
+    - Mounts a Secret volume at {{/etc/tls}} named {{tls-volume}} inside the container.
 
     You must create a TLS secret in the {{secure-logs}} namespace with these requirements:
     - Secret name must be {{tls-secret}}.
