@@ -96,7 +96,7 @@ ckad1_identify_deployment_issues:
   text: |
     You are contacted by a developer from team June-ior requesting help in troubleshooting their Deployment manifest. 
     Identify and fix all issues in the Deployment manifest and then apply it to your Kubernetes cluster on the {{june-ior}} namespace. You can create the namespace {{june-ior}} if it doesn't exist.
-    You must ensure that all Pods reach a Running & Ready state. You cannot delete the initContainer, livenessProbe, or readinessProbes, but you can change them.
+    You must ensure that all Pods reach a Running & Ready state.
 
     ```yaml
     apiVersion: apps/v1
