@@ -92,17 +92,33 @@ document.getElementById("nextArrow").addEventListener("click", () => {
 function startTimer() {
   const bar = document.getElementById("timer-bar");
 
+  const totalTime = 2 * 60 * 60 * 1000;
+  const endTime = Date.now() + totalTime;
+
+  localStorage.setItem("examEndTime", endTime);
+
   timerInterval = setInterval(() => {
-    timeLeft--;
-
-    const percent = (timeLeft / totalTime) * 100;
-    bar.style.width = percent + "%";
-
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      alert("Time is up!");
-    }
+    updateTimer(bar);
   }, 1000);
+}
+
+function updateTimer(bar) {
+  const endTime = parseInt(localStorage.getItem("examEndTime"), 10);
+
+  const now = Date.now();
+  const timeLeft = endTime - now;
+
+  if (timeLeft <= 0) {
+    clearInterval(timerInterval);
+    bar.style.width = "0%";
+    alert("Time is up!");
+    return;
+  }
+
+  const totalTime = 2 * 60 * 60 * 1000;
+  const percent = (timeLeft / totalTime) * 100;
+
+  bar.style.width = percent + "%";
 }
 
 function updateProgress(index) {
